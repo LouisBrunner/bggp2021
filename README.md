@@ -12,4 +12,11 @@ You can use `./start.sh` to start the Docker image and `make all`, `make clean` 
 
 ## Content
 
-The binary contains a basic program retuning `2` as a status code as well as a ZIP archive containing the program itself.
+### ELF
+
+The binary can be used as a x86 ELF binary on Linux 32bit.
+It will return `2` as a status code.
+
+### ZIP
+
+The binary can be unzipped as a ZIP archive containing a single file.

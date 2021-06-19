@@ -3,7 +3,7 @@ BUILD = build
 
 # Final file
 SRC = $(SRCDIR)/pog.asm
-OBJ = $(BUILD)/pog.zip
+OBJ = $(BUILD)/pog.all
 
 # Intermediate
 FILE2INC = $(SRCDIR)/test
@@ -39,8 +39,9 @@ re: clean all
 $(F2I_NAME): Makefile
 	echo 'db "$(FILE2INC_NAME)"' > $@
 
+# Remove default dict + checksum
 $(F2I_COMP): $(FILE2INC)
-	cat $< | zlib-flate -compress=9 > $@
+	cat $< | zlib-flate -compress=9 | tail -c +3 | head -c -4 > $@
 
 $(F2I_META): $(FILE2INC) $(F2I_COMP) Makefile
 	: > $@

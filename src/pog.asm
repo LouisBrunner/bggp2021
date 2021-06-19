@@ -4,44 +4,44 @@
 bits 32
 
 .ELF:
-; org     0x00010000
+org     0x00010000
 
-; ehdr:           ; Elf32_Ehdr
-;   db 0x7F, "ELF"
-;   db 1, 1, 1, 0 ; e_ident
-;   dd 0
-;   dd 0
-;   dw 2          ; e_type
-;   dw 3          ; e_machine
-;   dd 1          ; e_version
-;   dd _start     ; e_entry
-;   dd phdr - $$  ; e_phoff
-;   dd 0          ; e_shoff
-;   dd 0          ; e_flags
-;   dw ehdrsize   ; e_ehsize
-;   dw phdrsize   ; e_phentsize
-; phdr:           ; Elf32_Phdr
-;   dd 1          ; e_phnum, p_type
-;                 ; e_shentsize
-;   dd 0          ; e_shnum, p_offset
-;                 ; e_shstrndx
-; ehdrsize equ $ - ehdr
-;   dd $$         ; p_vaddr
-;   dd $$         ; p_paddr
-;   dd filesize   ; p_filesz
-;   dd filesize   ; p_memsz
-;   dd 5          ; p_flags
-;   dd 0x1000     ; p_align
-; phdrsize equ $ - phdr
+ehdr:           ; Elf32_Ehdr
+  db 0x7F, "ELF"
+  db 1, 1, 1, 0 ; e_ident
+  dd 0
+  dd 0
+  dw 2          ; e_type
+  dw 3          ; e_machine
+  dd 1          ; e_version
+  dd _start     ; e_entry
+  dd phdr - $$  ; e_phoff
+  dd 0          ; e_shoff
+  dd 0          ; e_flags
+  dw ehdrsize   ; e_ehsize
+  dw phdrsize   ; e_phentsize
+phdr:           ; Elf32_Phdr
+  dd 1          ; e_phnum, p_type
+                ; e_shentsize
+  dd 0          ; e_shnum, p_offset
+                ; e_shstrndx
+ehdrsize equ $ - ehdr
+  dd $$         ; p_vaddr
+  dd $$         ; p_paddr
+  dd filesize   ; p_filesz
+  dd filesize   ; p_memsz
+  dd 5          ; p_flags
+  dd 0x1000     ; p_align
+phdrsize equ $ - phdr
 
-; _start:
-;   xor eax,eax
-;   inc eax
-;   mov ebx,eax
-;   inc ebx
-;   int 0x80
+_start:
+  xor eax,eax
+  inc eax
+  mov ebx,eax
+  inc ebx
+  int 0x80
 
-; filesize equ $ - $$
+filesize equ $ - $$
 
 .ZIP:
 
@@ -83,8 +83,8 @@ cdhdr:
   dw fcsize     ; File comment length (k)
   dw 0          ; Disk number where file starts
   dw 0          ; Internal file attributes
-  dd 0          ; External file attributes
-  dd filehdr - $ ; Relative offset of local file header
+  dd 0100664o << 16 ; External file attributes
+  dd filehdr - $$ ; Relative offset of local file header
 ; This is the number of bytes between the start of the first disk on which the file occurs, and the start of the local file header.
 filename2:      ; File name
   %include 'build/test.name'
@@ -102,7 +102,7 @@ eocd:
   dw 1          ; Number of central directory records on this disk (or 0xffff for ZIP64)
   dw 1          ; Total number of central directory records (or 0xffff for ZIP64)
   dd cdsize     ; Size of central directory (bytes) (or 0xffffffff for ZIP64)
-  dd cdhdr      ; Offset of start of central directory, relative to start of archive (or 0xffffffff for ZIP64)
+  dd cdhdr - $$ ; Offset of start of central directory, relative to start of archive (or 0xffffffff for ZIP64)
   dw cmsize     ; Comment length (n)
 comment:        ; Comment
 cmsize equ $ - comment
