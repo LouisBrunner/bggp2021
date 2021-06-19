@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# MS-DOS date: https://docs.microsoft.com/en-gb/windows/win32/api/winbase/nf-winbase-dosdatetimetofiletime?redirectedfrom=MSDN
+
 import argparse
 import time
 from datetime import datetime

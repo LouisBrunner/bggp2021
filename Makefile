@@ -12,8 +12,9 @@ FILE2INC_DATE = 1993-04-30
 FILE2INC_TIME = 20:13:37
 F2I_NAME = $(BUILD)/test.name
 F2I_META = $(BUILD)/test.meta
+F2I_METASHR = $(BUILD)/test.meta_short
 F2I_COMP = $(BUILD)/test.deflated
-F2I = $(F2I_META) $(F2I_COMP) $(F2I_NAME)
+F2I = $(F2I_META) $(F2I_METASHR) $(F2I_COMP) $(F2I_NAME)
 
 # Workflow
 all: $(OBJ) audit
@@ -50,6 +51,7 @@ $(F2I_META): $(FILE2INC) $(F2I_COMP) Makefile
 	( echo -n 'dd 0x'; crc32 $(FILE2INC) ) >> $@
 	( echo -n 'dd '; stat -c '%s' $(F2I_COMP) ) >> $@
 	( echo -n 'dd '; stat -c '%s' $(FILE2INC) ) >> $@
+	cat $@ | head -n -2 > $(F2I_METASHR)
 
 $(OBJ): $(SRC) $(BUILD) $(F2I)
 	nasm -f bin -o $@ $<

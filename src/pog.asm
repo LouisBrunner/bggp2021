@@ -1,9 +1,7 @@
-; From https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html
-; MS-DOS date: https://docs.microsoft.com/en-gb/windows/win32/api/winbase/nf-winbase-dosdatetimetofiletime?redirectedfrom=MSDN
-; CRC-32: https://emn178.github.io/online-tools/crc32.html
 bits 32
 
 .ELF:
+; From https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html
 org     0x00010000
 
 ehdr:           ; Elf32_Ehdr
@@ -34,13 +32,6 @@ ehdrsize equ $ - ehdr
   dd 0x1000     ; p_align
 phdrsize equ $ - phdr
 
-_start:
-  xor eax,eax
-  inc eax
-  mov ebx,eax
-  inc ebx
-  int 0x80
-
 filesize equ $ - $$
 
 .ZIP:
@@ -53,9 +44,18 @@ filehdr:
   ; File last modification time
   ; File last modification date
   ; CRC-32 of uncompressed data
+  %include 'build/test.meta_short'
+
+  ; These 2 are replaced by the assembly for ELF, saving 8 bytes
   ; Compressed size (or 0xffffffff for ZIP64)
   ; Uncompressed size (or 0xffffffff for ZIP64)
-  %include 'build/test.meta'
+_start:
+  xor eax,eax
+  inc eax
+  mov ebx,eax
+  inc ebx
+  int 0x80
+
   dw fnsize1    ; File name length (n)
   dw efsize1    ; Extra field length (m)
 filename1:
