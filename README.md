@@ -1,5 +1,7 @@
 # Entry for the Binary Golf Grand Prix 2021
 
+This repository contains some prototypes I developed for BGGP 2021 (which I didn't participate in).
+
 ## Usage
 
 Requires Docker to be installed. Run `./build.sh`, the binary will be available as `build/pog.zip`.
